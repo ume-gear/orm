@@ -6,10 +6,18 @@ import (
     "github.com/ume-gear/orm"
 )
 import (_ "github.com/go-sql-driver/mysql")
-import (. "github.com/ume-gear/orm/test/dto")
+import (. "github.com/ume-gear/orm/test/dto"
+    "github.com/ume-gear/core"
+)
 
 func main() {
-    ctx := orm.GetContext()
+    cfg := core.NewPropertyConfig("src/github.com/ume-gear/orm/test/config/gear.properties")
+    driver := cfg.Get("ume.gdbc.driver")
+    url := cfg.Get("ume.gdbc.url")
+    username := cfg.Get("ume.gdbc.username")
+    password := cfg.Get("ume.gdbc.password")
+
+    ctx := orm.GetOrmContext(driver, username + ":" + password + "@" + url)
     defer ctx.Close()
 
     // 测试

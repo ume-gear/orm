@@ -9,9 +9,9 @@ func init() {
 	fmt.Println("Gear init...")
 }
 
-func GetContext() OrmContext {
-	return singleOrmContext()
-}
+//func GetContext() OrmContext {
+//	return singleOrmContext()
+//}
 
 // Create Orm
 func GetDao() *Orm {

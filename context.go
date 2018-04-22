@@ -14,26 +14,23 @@ var ormContext *OrmContext
 // 同步控制变量
 var ormContextLock sync.Once
 // 单例'OrmContext'
-func singleOrmContext() OrmContext {
+func singleOrmContext(driver string, dataSource string) OrmContext {
 	ormContextLock.Do(func() {
 		ormContext = new(OrmContext)
-		driverName := "mysql"
-		dataSourceName := "umesample:umePW123!!@tcp(114.115.185.91:3306)/umesample?charset=utf8&loc=Asia%2FShanghai&parseTime=true"
-		db, err := sql.Open(driverName, dataSourceName)
+		db, err := sql.Open(driver, dataSource)
 		if err != nil {
 			panic(err)
 		}
-		//defer db.Close()
 		ormContext.conn = db
 
 	})
 	return *ormContext
 }
 
-//// 初始化全局上下文实例
-//func (owner *OrmContext) Open() *OrmContext {
-//	return singleOrmContext()
-//}
+// 获取上下文
+func GetOrmContext(driver string, dataSource string) OrmContext {
+	return singleOrmContext(driver, dataSource)
+}
 
 // 释放上下文
 func (owner *OrmContext) Close() {
